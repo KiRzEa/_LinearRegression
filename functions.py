@@ -1,27 +1,20 @@
 import numpy as np
-
-
 def predict(X, Theta):
     return X @ Theta
-
-
 def computeCost(X, y, Theta):
-    predicted = predict(X, Theta)
-    error = predicted - y
+    sqr_error = (predict(X, Theta) - y) ** 2
     m = np.size(y)
-    J = (np.transpose(error) @ error) / (2 * m)
+    J = 1.0/(2*m) * np.sum(sqr_error)
     return J
-
-
-def GradientDescent(X, y, alpha=0.01, iter=10000):
+def GradientDescent(X, y, alpha=0.00001, iter=10000):
     Theta = np.zeros(np.size(X, 1))
     pre_cost = computeCost(X, y, Theta)
     X_T = np.transpose(X[:, 1:])
+    m = np.size(y)
     for i in range(0, iter):
-        predicted = predict(X, Theta)
-        error = predicted - y
-        tmp_b = Theta[0] - alpha * (np.mean(error))
-        tmp_w = Theta[1:] - alpha * (np.mean(X_T @ error))
+        error = predict(X, Theta) - y
+        tmp_b = Theta[0] - (alpha / m) * (np.sum(X[:, 0] @ error))
+        tmp_w = Theta[1:] - (alpha / m) * (X_T @ error)
         Theta[0] = tmp_b
         Theta[1:] = tmp_w
         cost = computeCost(X, y, Theta)
