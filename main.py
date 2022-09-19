@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 from functions import*
 df = pd.read_csv('USA_Housing.csv')
