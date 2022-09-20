@@ -7,6 +7,6 @@ df_Y = df['Price']
 X = np.ones((np.size(df_X, 0), np.size(df_X, 1) + 1))
 X[:, 1:] = np.array(df_X.values, 'float')
 y = np.array(df_Y.values, 'float')
-Theta = GradientDescent(X, y)
-_Theta = NormalEquation(X, y)
+Theta = GradientDescent(X[:4000, :], y[:4000])
+_Theta = NormalEquation(X[:4000, :], y[:4000])
 print(Theta, "\n", _Theta)
