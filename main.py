@@ -1,12 +1,26 @@
 import numpy as np
 import pandas as pd
+from sklearn.datasets import load_boston
 from functions import*
-df = pd.read_csv('USA_Housing.csv')
-df_X = df[['Avg. Area Income', 'Avg. Area House Age', 'Avg. Area Number of Rooms', 'Avg. Area Number of Bedrooms', 'Area Population']]
-df_Y = df['Price']
-X = np.ones((np.size(df_X, 0), np.size(df_X, 1) + 1))
-X[:, 1:] = np.array(df_X.values, 'float')
-y = np.array(df_Y.values, 'float')
-Theta = GradientDescent(X[:4000, :], y[:4000])
-_Theta = NormalEquation(X[:4000, :], y[:4000])
-print(Theta, "\n", _Theta)
+import matplotlib.pyplot as plt
+#Simple Linear Regression
+raw = np.loadtxt('data.txt', delimiter=',')
+_X = np.copy(raw[:, :-1])
+_X = normalize(_X)
+_X = np.hstack((np.ones((_X.shape[0], 1)), _X))
+_y = np.copy(raw[:, -1])
+[_Theta, _J_hist] = GradientDescent(_X, _y)
+print(_Theta)
+plt.figure(1)
+plt.plot(_J_hist[:, 0], _J_hist[:, 1], '-r')
+#Multiple Linear Regression
+boston = load_boston()
+X = boston.data
+y = boston.target
+X = normalize(X)
+X = np.hstack((np.ones((X.shape[0], 1)), X))
+[Theta, J_hist] = GradientDescent(X, y, 0.1, 400)
+print(Theta)
+plt.figure(2)
+plt.plot(J_hist[:, 0], J_hist[:, 1], '-b')
+plt.show()
